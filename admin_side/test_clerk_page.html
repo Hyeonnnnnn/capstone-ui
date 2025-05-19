@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Clerk Management Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #451968;
+            color: white;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        h1 {
+            color: #451968;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            overflow-x: auto;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Clerk Management Page Test Tool</h1>
+    <p>This tool will help verify all the function fixes for the clerk management page.</p>
+    
+    <div class="test-item">
+        <h3>Testing JavaScript File References</h3>
+        <button onclick="testScriptLoading()">Test Script Loading</button>
+        <div id="scriptLoadingResult"></div>
+    </div>
+    
+    <div class="test-item">
+        <h3>Testing Global Functions</h3>
+        <button onclick="testGlobalFunctions()">Test Global Functions</button>
+        <div id="globalFunctionsResult"></div>
+    </div>
+    
+    <div class="test-item">
+        <h3>Testing Modal Functionality</h3>
+        <button onclick="testModalFunctionality()">Test Modal Functionality</button>
+        <div id="modalFunctionalityResult"></div>
+    </div>
+    
+    <script>
+        // Function to test script loading
+        function testScriptLoading() {
+            const resultDiv = document.getElementById('scriptLoadingResult');
+            resultDiv.innerHTML = "";
+            
+            // Test if debug-log.js is loaded
+            try {
+                const debugLogTest = typeof logError === 'function' && typeof logSuccess === 'function';
+                const message = debugLogTest ? 
+                    '✓ debug-log.js loaded successfully!' : 
+                    '✗ debug-log.js not loaded. Make sure the script path is correct.';
+                
+                resultDiv.innerHTML += `<p class="${debugLogTest ? 'success' : 'error'}">${message}</p>`;
+            } catch (e) {
+                resultDiv.innerHTML += `<p class="error">✗ Error testing debug-log.js: ${e.message}</p>`;
+            }
+            
+            // Test if modal-fix.js is loaded
+            try {
+                const modalFixTest = typeof fixClerkDetailsModal === 'function';
+                const message = modalFixTest ? 
+                    '✓ modal-fix.js loaded successfully!' : 
+                    '✗ modal-fix.js not loaded. Make sure the script path is correct.';
+                
+                resultDiv.innerHTML += `<p class="${modalFixTest ? 'success' : 'error'}">${message}</p>`;
+            } catch (e) {
+                resultDiv.innerHTML += `<p class="error">✗ Error testing modal-fix.js: ${e.message}</p>`;
+            }
+            
+            // Test Bootstrap loading
+            try {
+                const bootstrapTest = typeof bootstrap !== 'undefined';
+                const message = bootstrapTest ? 
+                    '✓ Bootstrap loaded successfully!' : 
+                    '✗ Bootstrap not loaded. Make sure the script path is correct.';
+                
+                resultDiv.innerHTML += `<p class="${bootstrapTest ? 'success' : 'error'}">${message}</p>`;
+            } catch (e) {
+                resultDiv.innerHTML += `<p class="error">✗ Error testing Bootstrap: ${e.message}</p>`;
+            }
+        }
+        
+        // Function to test global functions
+        function testGlobalFunctions() {
+            const resultDiv = document.getElementById('globalFunctionsResult');
+            resultDiv.innerHTML = "";
+            
+            // List of functions to test
+            const functionsToTest = [
+                'showClerkDetails',
+                'showEditModal', 
+                'showDeleteModal',
+                'addNewClerk', 
+                'updateClerk', 
+                'displayFilteredClerks',
+                'formatDate',
+                'getRandomProfileImage',
+                'updateStatusSwitchLabel',
+                'fixModal'
+            ];
+            
+            // Test each function
+            functionsToTest.forEach(funcName => {
+                try {
+                    const funcExists = typeof window[funcName] === 'function';
+                    const message = funcExists ? 
+                        `✓ Function '${funcName}' is globally accessible!` : 
+                        `✗ Function '${funcName}' is not globally accessible.`;
+                    
+                    resultDiv.innerHTML += `<p class="${funcExists ? 'success' : 'error'}">${message}</p>`;
+                } catch (e) {
+                    resultDiv.innerHTML += `<p class="error">✗ Error testing '${funcName}': ${e.message}</p>`;
+                }
+            });
+        }
+        
+        // Function to test modal functionality
+        function testModalFunctionality() {
+            const resultDiv = document.getElementById('modalFunctionalityResult');
+            resultDiv.innerHTML = "<p>Testing modal functionality...</p>";
+            
+            try {
+                resultDiv.innerHTML += `<pre>
+This test needs to be run from the actual clerk management page.
+To test modal functionality:
+
+1. Go to admin_side/sidebar.php?page=manage_clerk_accounts
+2. Open browser console (F12)
+3. Type: showClerkDetails(1)
+4. Verify the modal opens properly
+
+If the modal still doesn't open, try:
+fixModal()
+
+Look for error messages in the console to diagnose any remaining issues.
+</pre>`;
+            } catch (e) {
+                resultDiv.innerHTML += `<p class="error">✗ Error: ${e.message}</p>`;
+            }
+        }
+    </script>
+    
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Include Bootstrap bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Include our utility scripts -->
+    <script src="debug-log.js"></script>
+    <script src="modal-fix.js"></script>
+</body>
+</html>
